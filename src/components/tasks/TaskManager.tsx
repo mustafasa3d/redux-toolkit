@@ -13,6 +13,7 @@ const TaskManager: React.FC = () => {
     const tasks = useSelector((state: RootState) => state.tasks.tasks)
     const dispatch = useDispatch()
 
+    console.log("tasks", tasks)
     const handleAddTask = () => {
         if (task) {
             dispatch(addTask(task))

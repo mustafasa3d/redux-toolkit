@@ -1,6 +1,7 @@
 import "./App.css"
 import Counter from "./components/counter/Counter"
-// import TaskManager from "./components/tasks/TaskManager"
+
+import TaskManager from "./components/tasks/TaskManager"
 
 function App() {
     return (
@@ -8,7 +9,7 @@ function App() {
             <div>
                 <h1>Redux Counter</h1>
                 <Counter />
-                {/* <TaskManager /> */}
+                <TaskManager />
             </div>
         </>
     )

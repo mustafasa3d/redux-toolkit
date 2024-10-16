@@ -3,16 +3,16 @@ import * as ActionTypes from "./actionTypes"
 import { CounterActionTypes } from "./actions"
 
 export interface RootState {
-    value: number
+    counter: number
 }
 
 // تعريف نوع الـ State
 interface CounterState {
-    value: number
+    counter: number
 }
 
 const initialState: CounterState = {
-    value: 0,
+    counter: 0,
 }
 
 // تحديث نوع الـ Reducer
@@ -21,17 +21,17 @@ const counterReducer = (state: CounterState = initialState, action: CounterActio
         case ActionTypes.INCREMENT:
             return {
                 ...state,
-                value: state.value + 1,
+                counter: state.counter + 1,
             }
         case ActionTypes.DECREMENT:
             return {
                 ...state,
-                value: state.value - 1,
+                counter: state.counter - 1,
             }
         case ActionTypes.INCREMENT_BY_AMOUNT:
             return {
                 ...state,
-                value: state.value + action.payload,
+                counter: state.counter + action.payload,
             }
         default:
             return state

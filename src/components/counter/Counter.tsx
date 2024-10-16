@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 const Counter: React.FC = () => {
     const [amount, setAmount] = useState<number>(0)
-    const count = useSelector((state: RootState) => state.value)
+    const counter = useSelector((state: RootState) => state.counter.counter)
     const dispatch: AppDispatch = useDispatch()
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,9 +19,11 @@ const Counter: React.FC = () => {
         dispatch(incrementByAmount(amount))
     }
 
+    console.log("count", counter)
+
     return (
         <div>
-            <p>Count: {count}</p>
+            <p>Count: {counter}</p>
             <input type="number" value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
             <button onClick={handleIncrementByAmount}>Increment by {amount}</button>
         </div>

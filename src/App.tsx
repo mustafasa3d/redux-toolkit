@@ -1,15 +1,13 @@
 import "./App.css"
 
-import Counter from "./components/counter/Counter"
-import TaskManager from "./components/tasks/TaskManager"
+import Test from "./store/Test"
 
 function App() {
     return (
         <>
             <div>
                 <h1>Redux Counter</h1>
-                <Counter />
-                <TaskManager />
+                <Test />
             </div>
         </>
     )

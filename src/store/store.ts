@@ -1,17 +1,11 @@
-// src/store/store.ts
-
 import { configureStore } from "@reduxjs/toolkit"
-import counterReducer from "./counter/counterSlice"
-import tasksReducer from "./tasks/tasksSlice"
-import { tasksApi } from "./tasks/tasksApiSlice"
+import { apiSlice } from "./apislice/apiSlice"
 
 const store = configureStore({
     reducer: {
-        counter: counterReducer,
-        tasks: tasksReducer,
-        [tasksApi.reducerPath]: tasksApi.reducer,
+        [apiSlice.reducerPath]: apiSlice.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(tasksApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: import.meta.env.MODE === "development",
 })
 

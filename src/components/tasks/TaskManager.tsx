@@ -4,7 +4,8 @@ import { addTask, removeTask, updateTask } from "../../store/tasks/tasksSlice"
 import { useDispatch, useSelector } from "react-redux"
 
 import { RootState } from "../../store/store"
-import { useGetTasksQuery } from "../../store/tasks/tasksApiSlice"
+import { useGetTasksQuery } from "../../store/apislice/apiSlice"
+// import { useGetTasksQuery } from "../../store/tasks/tasksApiSlice"
 
 const TaskManager: React.FC = () => {
     const { data: tasksData = [], isLoading, isFetching, isError } = useGetTasksQuery("completed") // جلب المهام

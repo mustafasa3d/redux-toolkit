@@ -1,21 +1,31 @@
 // src/store/store.ts
-import { legacy_createStore as createStore } from "redux"
 
-import { composeWithDevTools } from "@redux-devtools/extension"
-import rootReducer from "./rootReducer"
+import {
+  composeWithDevTools,
+  devToolsEnhancer,
+} from "@redux-devtools/extension";
+
+import { legacy_createStore as createStore } from "redux";
+import rootReducer from "./rootReducer";
 
 // تعريف enhancers لـ Redux DevTools
-const composeEnhancers = import.meta.env.MODE === "development" ? composeWithDevTools : undefined
+const composeEnhancers =
+  import.meta.env.MODE === "development" ? composeWithDevTools : undefined;
 
 // إنشاء الـ store باستخدام rootReducer
 const store = createStore(
-    rootReducer,
-    composeEnhancers ? composeEnhancers() : undefined // تمكين devtools فقط في التطوير
-)
+  rootReducer,
+  devToolsEnhancer({
+    trace: true,
+  })
+  // تمكين devtools فقط في التطوير
+  //   composeEnhancers ? composeEnhancers() : undefined
+  //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 
-export default store
+export default store;
 
 // import { legacy_createStore as createStore } from "redux"
 

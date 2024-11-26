@@ -4,8 +4,13 @@ import { addTask, removeTask, updateTask } from "../../store/tasks/tasksSlice"
 import { useDispatch, useSelector } from "react-redux"
 
 import { RootState } from "../../store/store"
+import { useGetTasksQuery } from "../../store/tasks/tasksApiSlice"
 
 const TaskManager: React.FC = () => {
+    const { data: tasksData = [], isLoading, isFetching, isError } = useGetTasksQuery("completed") // جلب المهام
+
+    console.log("tasksData", tasksData)
+
     const [task, setTask] = useState<string>("")
     const [editId, setEditId] = useState<number | null>(null)
     const [editTask, setEditTask] = useState<string>("")
@@ -43,7 +48,7 @@ const TaskManager: React.FC = () => {
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
             if (editId !== null) {
                 handleUpdateTask()
             } else {
@@ -52,21 +57,29 @@ const TaskManager: React.FC = () => {
         }
     }
 
+    if (isLoading || isFetching) {
+        return <p>Loading tasks...</p>
+    }
+
+    if (isError) {
+        return <p>Error fetching tasks. Please try again.</p>
+    }
+
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Task Manager</h2>
-            
+
             {/* Add Task Form */}
             <div className="flex gap-2 mb-6">
-                <input 
-                    type="text" 
-                    value={task} 
+                <input
+                    type="text"
+                    value={task}
                     onChange={(e) => setTask(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Add new task" 
+                    placeholder="Add new task"
                     className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button 
+                <button
                     onClick={handleAddTask}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                 >
@@ -77,23 +90,69 @@ const TaskManager: React.FC = () => {
 
             {/* Tasks List */}
             <div>
-                <h3 className="text-xl font-semibold mb-4 text-gray-700">Tasks</h3>
+                <h3 className="text-xl font-semibold mb-4 text-gray-700">api Tasks</h3>
                 <ul className="space-y-3">
-                    {tasks.map((task) => (
-                        <li 
-                            key={task.id} 
+                    {tasksData.map((task) => (
+                        <li
+                            key={task.id}
                             className="flex items-center gap-2 p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors"
                         >
                             {editId === task.id ? (
                                 <>
-                                    <input 
-                                        type="text" 
-                                        value={editTask} 
+                                    <input
+                                        type="text"
+                                        value={editTask}
                                         onChange={(e) => setEditTask(e.target.value)}
                                         onKeyPress={handleKeyPress}
                                         className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
-                                    <button 
+                                    <button
+                                        onClick={handleUpdateTask}
+                                        className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                                    >
+                                        <Check size={20} />
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="flex-1">{task.title}</span>
+                                    <button
+                                        onClick={() => handleEditTask(task.id)}
+                                        className="p-2 text-blue-500 hover:bg-blue-100 rounded-md transition-colors"
+                                    >
+                                        <Pencil size={20} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleRemoveTask(task.id)}
+                                        className="p-2 text-red-500 hover:bg-red-100 rounded-md transition-colors"
+                                    >
+                                        <Trash2 size={20} />
+                                    </button>
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+                {tasksData.length === 0 && (
+                    <p className="text-center text-gray-500 mt-4">No tasks yet. Add your first task!</p>
+                )}
+                <h3 className="text-xl font-semibold mb-4 text-gray-700">local Tasks</h3>
+                <ul className="space-y-3">
+                    {tasks.map((task) => (
+                        <li
+                            key={task.id}
+                            className="flex items-center gap-2 p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors"
+                        >
+                            {editId === task.id ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        value={editTask}
+                                        onChange={(e) => setEditTask(e.target.value)}
+                                        onKeyPress={handleKeyPress}
+                                        className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    <button
                                         onClick={handleUpdateTask}
                                         className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                                     >
@@ -103,13 +162,13 @@ const TaskManager: React.FC = () => {
                             ) : (
                                 <>
                                     <span className="flex-1">{task.task}</span>
-                                    <button 
+                                    <button
                                         onClick={() => handleEditTask(task.id)}
                                         className="p-2 text-blue-500 hover:bg-blue-100 rounded-md transition-colors"
                                     >
                                         <Pencil size={20} />
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => handleRemoveTask(task.id)}
                                         className="p-2 text-red-500 hover:bg-red-100 rounded-md transition-colors"
                                     >
